@@ -3,7 +3,6 @@ from pathlib import Path
 from fastapi import FastAPI
 
 import {{cookiecutter.service_name}}.modules
-import {{cookiecutter.service_name}}.modules.external
 import {{cookiecutter.service_name}}.common
 from {{cookiecutter.service_name}}.container import Application
 from {{cookiecutter.service_name}}.modules.example.api import router as example_router

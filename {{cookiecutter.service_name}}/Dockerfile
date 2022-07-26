@@ -36,7 +36,7 @@ RUN pip install -r requirements.txt
 FROM requirements as prod
 
 WORKDIR /app
-COPY ./deploy_info /app/deploy_info
+COPY ./{{cookiecutter.service_name}} /app/{{cookiecutter.service_name}}
 COPY ./scripts /app/scripts
 
-CMD python -m deploy_info.run
+CMD python -m {{cookiecutter.service_name}}.run

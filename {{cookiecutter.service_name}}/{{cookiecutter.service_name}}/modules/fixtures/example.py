@@ -1,12 +1,10 @@
-from pathlib import Path
-
 import pytest
 import pytest_asyncio
 
-from {{cookiecutter.service_name}}.main import app
 from {{cookiecutter.service_name}}.common.db import Database
-from {{cookiecutter.service_name}}.modules.access.tables import BattleSmtpTable
-from {{cookiecutter.service_name}}.modules.external.fishing_smtp import FishingSmtpClient
+from {{cookiecutter.service_name}}.modules.example.tables import ExampleTable
+from {{cookiecutter.service_name}}.modules.example.service import ExampleService
+from {{cookiecutter.service_name}}.modules.example.models import Example
 
 
 @pytest.fixture
@@ -14,23 +12,34 @@ def example_value_1():
     return '6d82b724a6b94e9cb3d68da3cd9211e4'
 
 
+@pytest.fixture
+def example_create_data_1():
+    return {
+        'value': 'test-1',
+        'children': ['child-test-1']
+    }
+
+
+@pytest.fixture
+def example_create_data_2():
+    return {
+        'value': 'test-2',
+        'children': ['child-test-2']
+    }
+
+
 @pytest_asyncio.fixture(scope="function")
-async def example_model_1(db: Database, battle_id_1):
-    model = await db.get_or_create(BattleSmtpTable(
-        battle_id=battle_id_1,
-        webapp_address='mail.services.stf',
-        smtp_domain='services.stf',
-        ssh_key='key',
-        ssh_user='autoadd',
-        ssh_address='localhost'
+async def example_model_1(db: Database, example_value_1) -> ExampleTable:
+    model = await db.get_or_create(ExampleTable(
+        value=example_value_1,
     ))
     yield model
     await db.delete(model)
 
 
 @pytest.fixture
-def example_mock_func_1(monkeypatch):
-    async def smtp_mock(*args, **kwargs):
-        return FishingSmtpClient.build_email(kwargs['login'], kwargs['smtp_domain'])
+def example_mock_func_1(monkeypatch, example_create_data_2):
+    async def example_mock(*args, **kwargs):
+        return Example(**example_create_data_2)
 
-    monkeypatch.setattr(FishingSmtpClient, 'create_fishing_smtp_user', smtp_mock)
+    monkeypatch.setattr(ExampleService, 'get_example_with_children', example_mock)

@@ -3,7 +3,7 @@ import logging
 import uvicorn
 
 from {{cookiecutter.service_name}}.main import app
-from {{cookiecutter.service_name}}.modules.revert.tasks import start_tasks
+from {{cookiecutter.service_name}}.modules.example.tasks import start_tasks
 
 
 async def run_tasks(loop):

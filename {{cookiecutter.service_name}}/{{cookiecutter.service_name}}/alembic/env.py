@@ -7,8 +7,7 @@ from {{cookiecutter.service_name}}.main import app
 from alembic import context
 
 from {{cookiecutter.service_name}}.common.tables import BaseModel
-from {{cookiecutter.service_name}}.modules.access import tables
-from {{cookiecutter.service_name}}.modules.revert import tables
+from {{cookiecutter.service_name}}.modules.example import tables
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

@@ -4,46 +4,45 @@ from fastapi import Depends, Path
 from dependency_injector.wiring import inject, Provide
 
 from {{cookiecutter.service_name}}.container import Application
-from {{cookiecutter.service_name}}.modules.revert.models import (
-    RevertRequest
+from {{cookiecutter.service_name}}.common.models import OnlyId
+from {{cookiecutter.service_name}}.modules.example.models import (
+    CreateExample, Example, ExampleParent
 )
-from {{cookiecutter.service_name}}.modules.revert.service import RevertService
+from {{cookiecutter.service_name}}.modules.example.service import ExampleService
 from {{cookiecutter.service_name}}.common.router import ServiceAPIRouter
 
 
 router = ServiceAPIRouter(prefix='/example', tags=['example'])
 
 
-@router.get('/example/{id}', response_model=list[NewRequests], description="""
-    Метод получения новых машин на перезапуск с момента последнего запроса на кибербитве.
+@router.post('', response_model=OnlyId, description="""
+    Пример POST запроса
 """)
 @inject
-async def get_new_requests(
-    battle_id: int = Path(),
-    revert_service: RevertService = Depends(Provide[Application.services.revert]),
-) -> Iterable[NewRequests]:
-    return await revert_service.get_new_requests(battle_id=battle_id)
+async def create_example(
+    example: CreateExample,
+    example_service: ExampleService = Depends(Provide[Application.services.example]),
+) -> OnlyId:
+    return await example_service.create_example(example_request=example)
 
 
-@router.post('/cyberbattle/{battle_id}/status', description="""
-    Метод обновления статусов запросов на revert по признаку
+@router.get('/{id}/children', response_model=Example, description="""
+    Пример GET запроса, с получением дочерних сущностей
 """)
 @inject
-async def set_revert_status(
-    vms_info: list[StatusRequests],
-    battle_id: int = Path(),
-    revert_service: RevertService = Depends(Provide[Application.services.revert]),
-) -> None:
-    return await revert_service.set_revert_statuses(battle_id=battle_id, vms_info=vms_info)
+async def get_example_with_children(
+    id: int = Path(),
+    example_service: ExampleService = Depends(Provide[Application.services.example]),
+) -> Example:
+    return await example_service.get_example_with_children(id=id)
 
 
-@router.post('/cyberbattle/{battle_id}', response_model=CreateRevertResponse, description="""
-    Метод создания новых заявок на перезапуск машины на кибербитве
+@router.get('/{id}', response_model=ExampleParent, description="""
+    Пример GET запроса
 """)
 @inject
-async def create_new_revert_request(
-    revert_request: RevertRequest,
-    battle_id: int = Path(),
-    revert_service: RevertService = Depends(Provide[Application.services.revert]),
-) -> CreateRevertResponse:
-    return await revert_service.create_request(revert_request=revert_request, battle_id=battle_id)
+async def get_example(
+    id: int = Path(),
+    example_service: ExampleService = Depends(Provide[Application.services.example]),
+) -> ExampleParent:
+    return await example_service.get_example(id=id)

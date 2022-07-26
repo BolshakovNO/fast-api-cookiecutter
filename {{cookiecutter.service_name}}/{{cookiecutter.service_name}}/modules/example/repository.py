@@ -11,24 +11,25 @@ from {{cookiecutter.service_name}}.modules.example.tables import (
     ExampleChildTable, ExampleTable
 )
 from {{cookiecutter.service_name}}.modules.example.models import (
-    CreateExample, ExampleParent, Example, ExampleWithChildren
+    CreateExample, ExampleParent, Example, ExampleWithChild
 )
 from {{cookiecutter.service_name}}.common.repository import BaseRepository
 
 
 class ExampleRepository(BaseRepository):
 
-    async def create_example(self, example: CreateExample) -> None:
+    async def create_example(self, example: CreateExample) -> int:
         example_parent = await self.save(ExampleTable(
             value=example.value
         ))
-        for i in example:
+        for i in example.children:
             await self.save(ExampleChildTable(
                 parent_id=example_parent.id,
-                value=i.value
+                value=i
             ))
+        return example_parent.id
 
-    async def get_example_with_children(self, id: int) -> Iterable[ExampleWithChildren]:
+    async def get_example_with_children(self, id: int) -> list[ExampleWithChild]:
         stmt = (
             select(
                 ExampleTable.value,
@@ -46,9 +47,9 @@ class ExampleRepository(BaseRepository):
         result = await self.execute(stmt)
 
         return [
-            ExampleWithChildren(
+            ExampleWithChild(
                 value=item.value,
-                child_value=child_value.name,
+                child_value=item.child_value,
             )
             for item in result
         ]

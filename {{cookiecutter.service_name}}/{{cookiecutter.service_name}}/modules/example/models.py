@@ -9,7 +9,7 @@ class Example(BaseModel):
     children: list[str]
 
 
-class ExampleWithChildren(BaseModel):
+class ExampleWithChild(BaseModel):
     value: str
     child_value: str
 

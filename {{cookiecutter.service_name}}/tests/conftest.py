@@ -9,7 +9,7 @@ from {{cookiecutter.service_name}}.common.db import Database
 
 
 pytest_plugins = [
-    "{{cookiecutter.service_name}}.modules.fixtures.access",
+    "{{cookiecutter.service_name}}.modules.fixtures.example",
 ]
 
 
@@ -36,18 +36,3 @@ def config() -> dict:
 def db(config) -> Database:
     db = Database(config['gateways']['db']['url'])
     yield db
-
-
-@pytest.fixture(scope="session")
-def user_id_1():
-    return 1
-
-
-@pytest.fixture(scope="session")
-def username_1():
-    return 'user1'
-
-
-@pytest.fixture(scope="session")
-def battle_id_1():
-    return 2
