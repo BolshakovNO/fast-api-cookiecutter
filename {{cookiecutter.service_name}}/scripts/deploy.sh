@@ -61,5 +61,5 @@ if [ $config -eq 1 ]; then
 fi
 
 echo 'upload on stand'
-scp deploy/{{cookiecutter.service_name}}.tar.gz scripts/deploy_on_stand.sh cm@{{deploy_host}}:/home/cm/{{cookiecutter.service_name}}/
+scp deploy/{{cookiecutter.service_name}}.tar.gz scripts/deploy_on_stand.sh cm@{{cookiecutter.deploy_host}}:/home/cm/{{cookiecutter.service_name}}/
 rm -rf build/*
