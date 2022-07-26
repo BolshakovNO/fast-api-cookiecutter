@@ -1,0 +1,1 @@
+python -m alembic -c {{cookiecutter.service_name}}/alembic.ini revision --autogenerate -m "${1}"

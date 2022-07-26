@@ -1,0 +1,46 @@
+version: "3.7"
+services:
+
+  {{cookiecutter.service_name}}_web:
+    container_name: {{cookiecutter.service_name}}_web
+    image: nginx:alpine
+    depends_on:
+      - {{cookiecutter.service_name}}
+    ports:
+      - "8480:80"
+    volumes:
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+
+  {{cookiecutter.service_name}}_db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password --max_connections=${MAX_CONNECTIONS}
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: Passw0rd
+      MYSQL_DATABASE: {{cookiecutter.service_name}}
+
+  {{cookiecutter.service_name}}_adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - {{cookiecutter.service_name}}_db
+
+  {{cookiecutter.service_name}}:
+    container_name: {{cookiecutter.service_name}}
+    build:
+      context: .
+      target: prod
+    image: {{cookiecutter.service_name}}:latest
+    restart: always
+    env_file:
+      - .env
+    expose:
+      - 8000
+    depends_on:
+      - {{cookiecutter.service_name}}_db

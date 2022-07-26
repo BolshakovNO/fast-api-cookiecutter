@@ -1,0 +1,28 @@
+image: docker-standoff-snapshot.ptsecurity.ru/ubuntu-20.04
+
+variables:
+  REGISTRY: docker-standoff-snapshot.ptsecurity.ru/
+  ARTI_REPO: standoff.snapshot
+  DOCKER_USER: docker-standoff
+
+stages:
+  - build_and_test
+#  - deploy
+
+.build:
+  tags:
+    - linux
+    - docker
+    - build-med-high
+  stage: build_and_test
+  script:
+    - docker login "$REGISTRY" -u "$DOCKER_USER" -p "$DOCKER_PASSWORD"
+    - apt update && apt install make
+
+test:
+  extends: .build
+  environment:
+    name: staging
+  script:
+    - !reference [.build, script]
+    - make test

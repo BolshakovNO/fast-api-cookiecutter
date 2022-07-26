@@ -1,0 +1,16 @@
+version: "3.7"
+services:
+
+  test_api:
+    image: {{cookiecutter.service_name}}_test:latest
+    build:
+      context: .
+      target: test
+      network: host
+    env_file:
+      - .env_deploy
+    depends_on:
+      - db
+
+  {{cookiecutter.service_name}}_db:
+    restart: "no"

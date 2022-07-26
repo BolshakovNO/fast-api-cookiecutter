@@ -1,0 +1,15 @@
+core:
+  debug: '${DEBUG}'
+
+  tasks:
+    run_tasks: ${RUN_TASKS}
+
+  app:
+    run_app: ${RUN_SERVER}
+    workers: ${WORKERS}
+
+gateways:
+  db:
+    url: "mysql+aiomysql://${DB_USER}:${DB_PASSWORD}@${DB_ADDRESS}/${DB_NAME}"
+    echo: ${ECHO_SQL}
+    max_connections: ${MAX_CONNECTIONS}

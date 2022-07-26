@@ -1,0 +1,8 @@
+uvicorn[standard]==0.17.6
+uvloop
+fastapi==0.78.0
+sqlalchemy[aiomysql]==1.4.36
+alembic==1.7.7
+dependency-injector[yaml]==4.39.1
+python-dateutil==2.8.2
+httpx==0.23.0
