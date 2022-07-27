@@ -1,0 +1,4 @@
+{
+  "module_name": "module",
+  "service_name": "{{cookiecutter.service_name}}"
+}

@@ -1,0 +1,1 @@
+cookiecutter ./scripts/module_tmp -o {{cookiecutter.service_name}}/modules

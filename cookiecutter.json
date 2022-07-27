@@ -1,4 +1,7 @@
 {
   "service_name": "service",
-  "deploy_host": "localhost"
+  "deploy_host": "localhost",
+  "_copy_without_render": [
+      "scripts/module_tmp/{{cookiecutter.module_name}}"
+  ]
 }

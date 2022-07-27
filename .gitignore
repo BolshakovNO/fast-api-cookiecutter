@@ -1,0 +1,8 @@
+.DS_Store
+.vscode
+.history
+.idea
+
+__pycache__
+.pytest_cache
+*.pyc
